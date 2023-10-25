@@ -8,7 +8,7 @@ Requirements
 ------------
 
 - Python (2 or 3)
-- PyQt4
+- PyQt5
 
 CSV Backend Configuration
 -------------------------
