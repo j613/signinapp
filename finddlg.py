@@ -1,6 +1,7 @@
 from __future__ import print_function
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 MAC = "qt_mac_set_native_menubar" in dir()
 

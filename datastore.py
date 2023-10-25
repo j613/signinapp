@@ -2,7 +2,7 @@ from __future__ import print_function
 import os
 import pickle
 import backend_roster as backend
-from PyQt4.QtCore import QObject, QMutex, QMutexLocker, pyqtSignal
+from PyQt5.QtCore import QObject, QMutex, QMutexLocker, pyqtSignal
 from models import *
 
 class DataStore(QObject):

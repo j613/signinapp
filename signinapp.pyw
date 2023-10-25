@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
 try:
     from configparser import ConfigParser
 except ImportError:
@@ -113,6 +115,7 @@ class PersonImage(QWidget):
         self.pixmap = self.getPlaceholderPixmap()
         self.label.setText("%s (%d)" % (
             record.person.name.partition(' ')[0], record.person.badge))
+        self.label.setStyleSheet("color:black;background-color:white")
         self.update()
 
     def clear(self):

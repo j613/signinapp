@@ -1,7 +1,7 @@
 from __future__ import print_function
 from datetime import datetime
 import os
-from PyQt4.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal
 
 class SuperQObject(QObject):
     """ Permits the use of super() in class hierarchies that contain QObject.
