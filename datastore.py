@@ -2,7 +2,7 @@ from __future__ import print_function
 import os
 import pickle
 import backend_roster as backend
-from PyQt5.QtCore import QObject, QMutex, QMutexLocker, pyqtSignal
+from PyQt6.QtCore import QObject, QMutex, QRecursiveMutex, QMutexLocker, pyqtSignal
 from models import *
 
 class DataStore(QObject):
@@ -12,7 +12,7 @@ class DataStore(QObject):
     def __init__(self, backend):
         super(DataStore, self).__init__()
         self.backend = backend
-        self.mutex = QMutex(QMutex.Recursive)
+        self.mutex = QRecursiveMutex()
         self.people = {}
         self.timeLog = []
         self.clockedIn = {}

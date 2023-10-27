@@ -1,6 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 
 class PasswordDlg(QDialog):
     def __init__(self, parent=None):
@@ -9,10 +9,10 @@ class PasswordDlg(QDialog):
         passwordLabel = QLabel("&Password:")
         self.passwordEdit = QLineEdit()
         passwordLabel.setBuddy(self.passwordEdit)
-        self.passwordEdit.setEchoMode(QLineEdit.Password)
+        self.passwordEdit.setEchoMode(QLineEdit.EchoMode.Password)
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-                                     QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|
+                                     QDialogButtonBox.StandardButton.Cancel)
 
         layout = QGridLayout()
         layout.addWidget(passwordLabel, 0, 0)
@@ -33,4 +33,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     form = PasswordDlg()
     form.show()
-    app.exec_()
+    app.exec()

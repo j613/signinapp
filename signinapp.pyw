@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 
 try:
     from configparser import ConfigParser
@@ -42,8 +42,8 @@ class ImageLoader(QObject):
         if image.isNull():
             return
         image = image.scaled(width, height,
-                Qt.KeepAspectRatioByExpanding,
-                Qt.SmoothTransformation)
+                Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+                Qt.TransformationMode.SmoothTransformation)
         self.loaded.emit(filename, image)
 
         if self.pending:
@@ -71,8 +71,8 @@ class PersonImage(QWidget):
         self.pixmap = None
         self.record = None
         self.label = QLabel(self)
-        self.label.setAlignment(Qt.AlignCenter)
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         self.labelHeight = self.label.minimumSizeHint().height() * 1.25
 
     def minimumSizeHint(self):
@@ -86,8 +86,8 @@ class PersonImage(QWidget):
     def getPlaceholderPixmap(self):
         width, height = self.getPixmapSize()
         return QPixmap.fromImage(self.noImage.scaled(width, height,
-                Qt.KeepAspectRatioByExpanding,
-                Qt.SmoothTransformation))
+                Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+                Qt.TransformationMode.SmoothTransformation))
 
     def resizeEvent(self, event=None):
         self.label.move(0, self.size().height()-self.labelHeight)
@@ -96,8 +96,8 @@ class PersonImage(QWidget):
     def paintEvent(self, event=None):
         p = QPainter(self)
         p.save()
-        p.fillRect(p.viewport(), Qt.white)
-        p.setPen(Qt.black)
+        p.fillRect(p.viewport(), Qt.GlobalColor.white)
+        p.setPen(Qt.GlobalColor.black)
         p.drawRect(p.viewport().adjusted(0, 0, -1, -1))
         p.restore()
 
@@ -187,14 +187,14 @@ class MainWindow(QMainWindow):
 
         # Photos
         studentlabel = QLabel("Students")
-        studentlabel.setAlignment(Qt.AlignCenter)
-        studentlabel.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        studentlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        studentlabel.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         studentlabel.setObjectName("student")
         layout.addWidget(studentlabel, 0, 0, 1, 7)
 
         adultlabel = QLabel("Mentors & Parents")
-        adultlabel.setAlignment(Qt.AlignCenter)
-        adultlabel.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        adultlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        adultlabel.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         adultlabel.setObjectName("adult")
         layout.addWidget(adultlabel, 0, 8, 1, 3)
 
@@ -363,7 +363,7 @@ class MainWindow(QMainWindow):
                 widget.set(record)
                 width, height = widget.getPixmapSize()
                 QMetaObject.invokeMethod(self.imageLoader, 'loadOne',
-                                         Qt.QueuedConnection,
+                                         Qt.ConnectionType.QueuedConnection,
                                          Q_ARG(str, widget.image),
                                          Q_ARG(int, width),
                                          Q_ARG(int, height))
@@ -384,26 +384,26 @@ class MainWindow(QMainWindow):
     def findUser(self):
         form = FindDlg(self.datastore, parent=self)
         form.personInOut.connect(self.signInOut)
-        form.exec_()
+        form.exec()
 
     def signOutAll(self):
         reply = QMessageBox.warning(self, "Confirm sign out",
                 "Are you sure you want to sign out ALL users?",
-                QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
+                QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
             self.datastore.signOutAll()
 
     def clearAll(self):
         reply = QMessageBox.warning(self, "Confirm clear",
                 "Are you sure you want to clear ALL users?\n"
                 "They will not get any hours credit!",
-                QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
+                QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
             self.datastore.clearAll()
 
     def setServerPassword(self):
         form = PasswordDlg(self)
-        if form.exec_():
+        if form.exec():
             self.backend.setPassword(form.result())
             self.serverSyncAction.setEnabled(True)
 
@@ -411,7 +411,7 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Synchronizing...")
         self.serverPasswordAction.setEnabled(False)
         self.serverSyncAction.setEnabled(False)
-        QMetaObject.invokeMethod(self.synchronizer, 'sync', Qt.QueuedConnection)
+        QMetaObject.invokeMethod(self.synchronizer, 'sync', Qt.ConnectionType.QueuedConnection)
 
     def syncDone(self):
         self.serverPasswordAction.setEnabled(True)
@@ -466,7 +466,7 @@ class MainWindow(QMainWindow):
             toload[pi.image] = pi.getPixmapSize()
             self.imageWidget[str(pi.image)] = pi
 
-        QMetaObject.invokeMethod(self.imageLoader, 'load', Qt.QueuedConnection,
+        QMetaObject.invokeMethod(self.imageLoader, 'load', Qt.ConnectionType.QueuedConnection,
                                  Q_ARG(dict, toload))
 
     @pyqtSlot(str, QImage)
@@ -485,4 +485,4 @@ if __name__ == "__main__":
         app.setStyleSheet(f.read())
     form = MainWindow()
     form.show()
-    app.exec_()
+    app.exec()

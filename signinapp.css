@@ -2,6 +2,7 @@ QLabel#student {
     font-size: 18px;
     border-radius: 5px;
     background-color: blue;
+    color:white;
     }
 QLabel#adult {
     font-size: 18px;

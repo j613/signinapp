@@ -1,7 +1,7 @@
 from __future__ import print_function
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 
 MAC = "qt_mac_set_native_menubar" in dir()
 
@@ -23,8 +23,8 @@ class FindDlg(QDialog):
         findButton = QPushButton("&Find")
         closeButton = QPushButton("&Close")
         if not MAC:
-            findButton.setFocusPolicy(Qt.NoFocus)
-            closeButton.setFocusPolicy(Qt.NoFocus)
+            findButton.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            closeButton.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         gridLayout = QGridLayout()
         gridLayout.addWidget(findLabel, 0, 0)
@@ -51,11 +51,11 @@ class FindDlg(QDialog):
         self.results.setRowCount(len(people))
         for row, person in enumerate(people):
             item = QTableWidgetItem(person.name)
-            item.setFlags(Qt.ItemIsSelectable|Qt.ItemIsEnabled)
+            item.setFlags(Qt.ItemFlag.ItemIsSelectable|Qt.ItemFlag.ItemIsEnabled)
             self.results.setItem(row, 0, item)
 
             item = QTableWidgetItem(str(person.badge))
-            item.setFlags(Qt.ItemIsSelectable|Qt.ItemIsEnabled)
+            item.setFlags(Qt.ItemFlag.ItemIsSelectable|Qt.ItemFlag.ItemIsEnabled)
             self.results.setItem(row, 1, item)
         self.results.sortItems(0)
 
@@ -71,4 +71,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     form = FindDlg(store)
     form.show()
-    app.exec_()
+    app.exec()
