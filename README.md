@@ -7,8 +7,8 @@ web application.
 Requirements
 ------------
 
-- Python (2 or 3)
-- PyQt5
+- Python 3
+- PyQt6
 
 CSV Backend Configuration
 -------------------------
