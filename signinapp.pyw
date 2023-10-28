@@ -73,7 +73,7 @@ class PersonImage(QWidget):
         self.label = QLabel(self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-        self.labelHeight = self.label.minimumSizeHint().height() * 1.25
+        self.labelHeight = round(self.label.minimumSizeHint().height() * 1.25)
 
     def minimumSizeHint(self):
         return QSize(60, 100)
@@ -105,8 +105,8 @@ class PersonImage(QWidget):
             width = p.viewport().width()
             height = p.viewport().height() - self.labelHeight
             p.drawPixmap(0, 0, self.pixmap,
-                    abs(width - self.pixmap.width()) / 2,
-                    abs(height - self.pixmap.height()) / 2,
+                    round(abs(width - self.pixmap.width()) / 2),
+                    round(abs(height - self.pixmap.height()) / 2),
                     width, height)
 
     def set(self, record):
@@ -115,13 +115,14 @@ class PersonImage(QWidget):
         self.pixmap = self.getPlaceholderPixmap()
         self.label.setText("%s (%d)" % (
             record.person.name.partition(' ')[0], record.person.badge))
-        self.label.setStyleSheet("color:black;background-color:white")
+        self.label.setStyleSheet("color:black;background-color:white;border: 1px solid black;")
         self.update()
 
     def clear(self):
         self.record = None
         self.image = None
         self.pixmap = None
+        self.label.setStyleSheet("border: none;")
         self.label.clear()
         self.update()
 
